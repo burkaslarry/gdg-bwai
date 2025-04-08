@@ -1,5 +1,5 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import fs from 'fs/promises';
+import { GoogleGenAI } from '@google/genai';
+import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
 import open from 'open';
 
@@ -13,6 +13,10 @@ const modelName = 'gemini-1.5-flash-latest';
 const prompt =
   'Who individually won the most gold medals during the Paris olympics in 2024?';
 
+const config = {
+  tools: [{ googleSearchRetrieval: {} }],
+};
+
 function escapeHtml(unsafe) {
   if (!unsafe) return '';
   return unsafe
@@ -25,26 +29,18 @@ function escapeHtml(unsafe) {
 
 async function run() {
   try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-
-    const model = genAI.getGenerativeModel({
-      model: modelName,
-    });
-
-    const tools = [{ googleSearchRetrieval: {} }];
-
-    const request = {
-      contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      tools: tools,
-    };
+    const genAI = new GoogleGenAI({ apiKey });
 
     console.log(
       `Sending request to model (${modelName}) with Google Search enabled...`
     );
-    const result = await model.generateContent(request);
+    const result = await genAI.models.generateContent({
+      model: modelName,
+      contents: prompt,
+      config,
+    });
 
-    const response = result.response;
-    const modelResponseText = response?.text();
+    const modelResponseText = result.text;
 
     if (modelResponseText) {
       console.log('\n--- Model Response Text ---');
@@ -53,7 +49,7 @@ async function run() {
       console.log('\n--- No text content in response ---');
     }
 
-    const groundingMetadata = response?.candidates?.[0]?.groundingMetadata;
+    const groundingMetadata = result?.candidates?.[0]?.groundingMetadata;
     const searchEntryPoint = groundingMetadata?.searchEntryPoint;
     const renderedContent = searchEntryPoint?.renderedContent;
 
@@ -93,14 +89,14 @@ ${escapeHtml(modelResponseText) || 'No text response provided.'}
 `;
 
         const targetDir = path.join(process.cwd(), 'tmp');
-        await fs.mkdir(targetDir, { recursive: true });
+        await mkdir(targetDir, { recursive: true });
         console.log(`Ensured directory exists: ${targetDir}`);
 
         const tempFileName = `gemini-combined-output-${Date.now()}.html`;
         const tempFilePath = path.join(targetDir, tempFileName);
 
         // Write the COMBINED HTML content to the file
-        await fs.writeFile(tempFilePath, combinedHtmlContent, 'utf8');
+        await writeFile(tempFilePath, combinedHtmlContent, 'utf8');
         console.log(`Saved combined response to: ${tempFilePath}`);
 
         console.log('Opening file in default browser...');
