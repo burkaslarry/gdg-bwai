@@ -18,6 +18,12 @@ WEATHER_API=""
 GEMINI_API_KEY_FOR_FINE_TUNED_MODEL=""
 ```
 
+## Setup the dependencies
+
+Run `npm i` in the root folder to install the required dependencies.
+
+# Available `npm` command list
+
 These are the various `npm` commands that you can run - please refer to the slides on what they do and how to use them exactly:
 
 - npm run chat ^
