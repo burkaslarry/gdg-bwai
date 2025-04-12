@@ -25,6 +25,7 @@
     "@google/genai": "^0.7.0",
     "@google/generative-ai": "^0.21.0",
     "cli-markdown": "^3.4.0",
+    "marked": "^15.0.8",
     "natural": "^8.0.1",
     "open": "^10.1.0",
     "yocto-spinner": "^0.2.0"
