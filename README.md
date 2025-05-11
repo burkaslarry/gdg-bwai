@@ -45,9 +45,3 @@ These are the various `npm` commands that you can run - please refer to the slid
 ^^    Requires Fine Tuning Gemini API key for the fine tuned model
 ^^^   Requires Weather API key
 ```
-
-# Redeem Cloudinary Coupon
-
-To apply the coupon, you need to [log in / register a Cloudinary account](https://cloudinary.com/users/register_free), head to the Settings, choose "Change Plan" and then choose the "Plus" plan. Then, you'll need to enter billing information > next to the payment details and you'll have an option to redeem a coupon.
-
-\*Note that you'll probably have to enter payment details because the coupon will expire after 1 month. In case you don't want to continue on a paid subscription, you'll need to cancel the subscription (downgrade to the Free plan) before the next billing cycle begins.
