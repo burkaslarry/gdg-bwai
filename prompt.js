@@ -1,12 +1,27 @@
-import { GoogleGenAI } from '@google/genai';
+command: ⁠ import { GoogleGenAI } from '@google/genai';
 
-const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-const prompt = 'What is Star Wars?';
-
-const response = await genAI.models.generateContent({
-  model: 'gemini-2.0-flash',
-  contents: prompt,
+const ai = new GoogleGenAI({
+  vertexai: true,
+  project: 'CHANGE',
+  location: 'CHANGE',
 });
+const model = 'gemini-2.5-flash';
 
-console.log(response.text);
+async function generateContent() {
+  const req = {
+    model: model,
+    contents: 'say hi',
+  };
+
+  const streamingResp = await ai.models.generateContentStream(req);
+
+  for await (const chunk of streamingResp) {
+    if (chunk.text) {
+      process.stdout.write(chunk.text);
+    } else {
+      process.stdout.write(JSON.stringify(chunk) + '\n');
+    }
+  }
+}
+
+generateContent(); ⁠
