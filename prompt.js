@@ -1,10 +1,11 @@
-command: ⁠ import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
 
 const ai = new GoogleGenAI({
   vertexai: true,
-  project: 'CHANGE',
-  location: 'CHANGE',
+  project: 'genai-test-467401', // Replace with your Google Cloud project ID
+  location: 'us-central1',   // Replace with your region (e.g., us-central1, europe-west4)
 });
+
 const model = 'gemini-2.5-flash';
 
 async function generateContent() {
@@ -24,4 +25,4 @@ async function generateContent() {
   }
 }
 
-generateContent(); ⁠
+generateContent();
